@@ -26,7 +26,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rigidbody;
     private Animator animator;
     private int jumpInput = 0;
-    private bool onGround = false;
+    public bool isGrounded = false;
+    public float distanceToGround;
 
 
     // Start is called before the first frame update
@@ -42,7 +43,7 @@ public class PlayerController : MonoBehaviour
     {
         InputHandling();
         Run();
-        CheckGround();
+       Debug.Log (CheckGround());
         Jump();
         rigidbody.velocity = velocity;
 
@@ -55,14 +56,15 @@ public class PlayerController : MonoBehaviour
 
     void Jump()
     {
-        if (jumpInput == 1 && onGround) //Pif player is on the ground hit jumping
+        if (jumpInput == 1 && CheckGround()) //Pif player is on the ground hit jumping
         {
+            Debug.Log("JUMP");
             //Jumping is on y axis
             velocity.y = movementSettings.jumpVelocity; //change the velocity of the ait to Rigedbody
             animator.SetTrigger("Jump"); //chnage animation
 
         }
-        else if (jumpInput == 0 && onGround)
+        else if (jumpInput == 0 && CheckGround())
         {
             velocity.y = 0;
 
@@ -74,35 +76,19 @@ public class PlayerController : MonoBehaviour
         jumpInput = 0; //after jump is done change to zero again  
     }
 
-    void CheckGround()
+    bool CheckGround()
     {
-        //To check Whethert the palyer is on the ground
-        Ray ray = new Ray(transform.position + Vector3.up * 0.1f, Vector3.down);
-        RaycastHit[] hits = Physics.RaycastAll(ray, 0.5f);
-        onGround = false;
-        rigidbody.useGravity = true;
-        foreach (var hit in hits)
-        {
-            if (!hit.collider.isTrigger) // in here we dont watn array to touch the object that has a clollider as trigger
-            {
-                if (velocity.y <= 0) // checking
-                {
-                    rigidbody.position = Vector3.MoveTowards(rigidbody.position,
-                        new Vector3(hit.point.x, hit.point.y + 0.1f, hit.point.z), Time.deltaTime * 10);
-                }
-                rigidbody.useGravity = false; // when player is on the ground dont use gravity
-                onGround = true;
-                break; // when reached on ground
-            }
 
-        }
+        return Physics.Raycast(transform.position, Vector3.down, distanceToGround);
+       
     }
 
 
     void InputHandling()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) // Jump
+        if (Input.GetKeyDown("space")) // Jump
         {
+           
             jumpInput = 1;
         }
     }
