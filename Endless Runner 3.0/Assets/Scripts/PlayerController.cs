@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
 
     public MovementSettings movementSettings = new MovementSettings();
     public PhysicsSettings physicsSettings = new PhysicsSettings();
+    public float Xspeed = 10;
 
 
     private Vector3 velocity;
@@ -28,6 +29,7 @@ public class PlayerController : MonoBehaviour
     private int jumpInput = 0;
     public bool isGrounded = false;
     public float distanceToGround;
+    private float xmovement = 0;
 
 
     // Start is called before the first frame update
@@ -45,6 +47,7 @@ public class PlayerController : MonoBehaviour
         Run();
        Debug.Log (CheckGround());
         Jump();
+        MoveX();
         rigidbody.velocity = velocity;
 
     }
@@ -83,6 +86,11 @@ public class PlayerController : MonoBehaviour
        
     }
 
+    void MoveX()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, new Vector3(xmovement, transform.position.y, transform.position.z), Time.deltaTime * Xspeed);
+    }
+
 
     void InputHandling()
     {
@@ -91,5 +99,32 @@ public class PlayerController : MonoBehaviour
            
             jumpInput = 1;
         }
+        else if (Input.GetKeyDown(KeyCode.D)) // Right
+        {
+            if (xmovement == 0) // player is in the middle
+            {
+                xmovement = 5;
+                animator.SetTrigger("RightMove");
+            }
+            else if (xmovement == -5) // player is in the left
+            {
+                xmovement = 0;
+                animator.SetTrigger("RightMove");
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.A)) // left
+        {
+            if (xmovement == 0) // player is in the middle
+            {
+                xmovement = -5;
+                animator.SetTrigger("LeftMove");
+            }
+            else if (xmovement == 5) // player is in the right
+            {
+                xmovement = 0;
+                animator.SetTrigger("LeftMove");
+            }
+        }
     }
 }
+
