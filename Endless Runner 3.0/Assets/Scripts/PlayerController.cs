@@ -26,11 +26,10 @@ public class PlayerController : MonoBehaviour
     private Vector3 velocity;
     private Rigidbody rigidbody;
     private Animator animator;
-    private int jumpInput = 0;
+    private int jumpInput = 0, slideInput = 0;
     public bool isGrounded = false;
     public float distanceToGround;
     private float xmovement = 0;
-
 
     // Start is called before the first frame update
     void Start()
@@ -47,6 +46,7 @@ public class PlayerController : MonoBehaviour
         Run();
        Debug.Log (CheckGround());
         Jump();
+        Slide();
         MoveX();
         rigidbody.velocity = velocity;
 
@@ -55,6 +55,15 @@ public class PlayerController : MonoBehaviour
     void Run()
     {
         velocity.z = movementSettings.forwardVelocity;
+    }
+
+    void Slide()
+    {
+        if (slideInput == 1 && CheckGround()) // slide should be done when player is on the ground
+        {
+            animator.SetTrigger("Slide");
+            slideInput = 0;
+        }
     }
 
     void Jump()
@@ -94,12 +103,16 @@ public class PlayerController : MonoBehaviour
 
     void InputHandling()
     {
-        if (Input.GetKeyDown("space")) // Jump
+        if (Input.GetKeyDown(KeyCode.UpArrow)) // Jump
         {
            
             jumpInput = 1;
         }
-        else if (Input.GetKeyDown(KeyCode.D)) // Right
+        else if (Input.GetKeyDown(KeyCode.DownArrow)) // Slide
+        {
+            slideInput = 1;
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow)) // Right
         {
             if (xmovement == 0) // player is in the middle
             {
@@ -112,7 +125,7 @@ public class PlayerController : MonoBehaviour
                 animator.SetTrigger("RightMove");
             }
         }
-        else if (Input.GetKeyDown(KeyCode.A)) // left
+        else if (Input.GetKeyDown(KeyCode.LeftArrow)) // left
         {
             if (xmovement == 0) // player is in the middle
             {
