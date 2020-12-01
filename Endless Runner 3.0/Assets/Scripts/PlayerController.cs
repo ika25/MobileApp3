@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     public MovementSettings movementSettings = new MovementSettings();
     public PhysicsSettings physicsSettings = new PhysicsSettings();
     public float Xspeed = 10;
+    public bool IsDead = false;
 
 
     private Vector3 velocity;
@@ -105,7 +106,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.UpArrow)) // Jump
         {
-           
+
             jumpInput = 1;
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow)) // Slide
@@ -139,5 +140,12 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+        public void KillPlayer()
+        {
+            IsDead = true;
+            movementSettings.forwardVelocity = 0;
+            animator.SetTrigger("Die");
+        }
 }
+
 
