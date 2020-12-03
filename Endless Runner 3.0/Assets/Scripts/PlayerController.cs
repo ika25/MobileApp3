@@ -28,9 +28,14 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rigidbody;
     private Animator animator;
     private int jumpInput = 0, slideInput = 0;
-    public bool isGrounded = false;
+    public bool onGround = false;
     public float distanceToGround;
     private float xmovement = 0;
+    // Collider veriables
+    private CapsuleCollider collider;
+    private float colliderSize;
+    private float colliderHight;
+    private Vector3 colliderCenter;
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +43,10 @@ public class PlayerController : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         velocity = Vector3.zero;
+        collider = GetComponent<CapsuleCollider>();
+        colliderHight = collider.height;
+        colliderCenter = collider.center;
+        
     }
 
     // Update is called once per frame
@@ -46,11 +55,48 @@ public class PlayerController : MonoBehaviour
         InputHandling();
         Run();
        Debug.Log (CheckGround());
+        ColliderHandling();
         Jump();
         Slide();
         MoveX();
         rigidbody.velocity = velocity;
 
+    }
+
+    void ColliderHandling()
+    {
+        if (onGround) //colider slide function wheen on ground
+        {
+            colliderSize = animator.GetFloat("ColliderSize");
+            if (colliderSize > 0.2f && colliderSize < 1) // Shrink
+            {
+                
+                collider.height = 2;
+                collider.center = new Vector3(collider.center.x, 0.85f, collider.center.z);
+            }
+            else // Reset
+            {
+                collider.height = colliderHight;
+                collider.center = colliderCenter;
+                
+            }
+        }
+        else // colider jump function when jumping
+        {
+            colliderSize = animator.GetFloat("ColliderSize");
+            if (colliderSize > 0.1f && colliderSize < 1) // Shrink
+            {
+                
+                collider.height = 3.2f;
+                collider.center = new Vector3(collider.center.x, 4.2f, collider.center.z);
+            }
+            else // Reset
+            {
+                
+                collider.height = colliderHight;
+                collider.center = colliderCenter;
+            }
+        }
     }
 
     void Run()
