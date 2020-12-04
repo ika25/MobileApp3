@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
+    public GameObject Particle_Coin;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,8 +21,8 @@ public class Coin : MonoBehaviour
     {
         if (other.tag == "Player")// lets check if this is player or not
         {
-            
-            Destroy(gameObject);//destroy game object
+            Instantiate(Particle_Coin, transform.position, Quaternion.identity);// instantiate effect
+            Destroy(gameObject);//destroy game objet Coin
             
         }
     }
