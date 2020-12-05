@@ -37,6 +37,8 @@ public class PlayerController : MonoBehaviour
     private float colliderHight;
     private Vector3 colliderCenter;
 
+    private float fVelocity;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,6 +48,7 @@ public class PlayerController : MonoBehaviour
         collider = GetComponent<CapsuleCollider>();
         colliderHight = collider.height;
         colliderCenter = collider.center;
+        fVelocity = movementSettings.forwardVelocity;
         
     }
 
@@ -70,7 +73,7 @@ public class PlayerController : MonoBehaviour
             colliderSize = animator.GetFloat("ColliderSize");
             if (colliderSize > 0.2f && colliderSize < 1) // Shrink
             {
-                
+                movementSettings.forwardVelocity = fVelocity + 5;
                 collider.height = 2;
                 collider.center = new Vector3(collider.center.x, 0.85f, collider.center.z);
             }
@@ -78,7 +81,8 @@ public class PlayerController : MonoBehaviour
             {
                 collider.height = colliderHight;
                 collider.center = colliderCenter;
-                
+                movementSettings.forwardVelocity = fVelocity;
+
             }
         }
         else // colider jump function when jumping
@@ -86,13 +90,13 @@ public class PlayerController : MonoBehaviour
             colliderSize = animator.GetFloat("ColliderSize");
             if (colliderSize > 0.1f && colliderSize < 1) // Shrink
             {
-                
+                movementSettings.forwardVelocity = fVelocity + 5;
                 collider.height = 3.2f;
                 collider.center = new Vector3(collider.center.x, 4.2f, collider.center.z);
             }
             else // Reset
             {
-                
+                movementSettings.forwardVelocity = fVelocity;
                 collider.height = colliderHight;
                 collider.center = colliderCenter;
             }
@@ -121,11 +125,13 @@ public class PlayerController : MonoBehaviour
             //Jumping is on y axis
             velocity.y = movementSettings.jumpVelocity; //change the velocity of the ait to Rigedbody
             animator.SetTrigger("Jump"); //chnage animation
+            
 
         }
         else if (jumpInput == 0 && CheckGround())
         {
             velocity.y = 0;
+            
 
         }
         else
