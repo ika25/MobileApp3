@@ -39,4 +39,12 @@ public class Menus : MonoBehaviour
     {
         Application.Quit();
     }
+
+    // Function to controll sound On/Off
+    public void AudioOnOff()
+    {
+        AudioIcon icon = GameObject.Find("AudioButton").GetComponent<AudioIcon>();
+        icon.SpriteSwitch();
+        
+    }
 }
