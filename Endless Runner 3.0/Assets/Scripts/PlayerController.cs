@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     public PhysicsSettings physicsSettings = new PhysicsSettings();
     public float Xspeed = 10;
     public bool IsDead = false;
+    public GameObject GameOverUI;
 
 
     private Vector3 velocity;
@@ -197,6 +198,8 @@ public class PlayerController : MonoBehaviour
             IsDead = true;
             movementSettings.forwardVelocity = 0;
             animator.SetTrigger("Die");
+            //show game over window
+            GameOverUI.GetComponent<Animator>().SetTrigger("Show");
         }
 }
 
