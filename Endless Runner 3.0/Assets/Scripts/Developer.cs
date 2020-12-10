@@ -1,0 +1,31 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Developer : MonoBehaviour
+{
+    public bool show = true;
+    public Help help;
+
+    // Update is called once per frame
+    public void Show_Hide()
+    {
+        if (show)
+        {
+            if (!help.show)
+            {
+                help.gameObject.GetComponent<Animator>().SetTrigger("Hide");
+                help.show = true;
+            }
+            
+            GetComponent<Animator>().SetTrigger("Show");
+            show = false;
+        }
+        else
+        {
+            GetComponent<Animator>().SetTrigger("Hide");
+            show = true;
+        }
+    }
+}
+
