@@ -18,6 +18,8 @@ public class LevelManager : MonoBehaviour
     public Text txtMultiplier;
     public int multiplier = 1;
     public float fillAmount = 10;
+    public int heartCount = 0;
+    public Text txtHeart;
 
 
     public static LevelManager instance
@@ -44,6 +46,12 @@ public class LevelManager : MonoBehaviour
     {
         ScoreCalculation();// calculating score
         CoinCount();// calculating coin
+        HeartCount();
+    }
+
+    private void HeartCount()
+    {
+        txtHeart.text = heartCount.ToString();
     }
 
     private void CoinCount()

@@ -23,7 +23,7 @@ public class Heart : MonoBehaviour
         {
             Instantiate(Particle_Heart, transform.position, Quaternion.identity);// instantiate effect
             Destroy(gameObject);//destroy game objet heart
-
+            LevelManager.instance.heartCount++;
         }
     }
 }
