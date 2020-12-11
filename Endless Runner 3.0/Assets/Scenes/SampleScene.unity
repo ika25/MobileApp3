@@ -1001,6 +1001,8 @@ MonoBehaviour:
   isPaused: 0
   coinCount: 0
   coin: {fileID: 2009019743}
+  imgCoinProgress: {fileID: 1697835781}
+  txtMultiplier: {fileID: 94221159}
 --- !u!4 &140768111
 Transform:
   m_ObjectHideFlags: 0
@@ -10923,7 +10925,17 @@ PrefabInstance:
     - target: {fileID: 3435801449680958058, guid: 1c3a0645c1647f948b5c92ec5f946e03,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -262.4
+      value: -272.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3435801449680958059, guid: 1c3a0645c1647f948b5c92ec5f946e03,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 10.71907
+      objectReference: {fileID: 0}
+    - target: {fileID: 3435801449680958059, guid: 1c3a0645c1647f948b5c92ec5f946e03,
+        type: 3}
+      propertyPath: m_Center.z
+      value: 40.63804
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c3a0645c1647f948b5c92ec5f946e03, type: 3}

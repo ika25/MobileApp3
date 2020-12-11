@@ -14,7 +14,10 @@ public class LevelManager : MonoBehaviour
     public bool isPaused;
     public int coinCount = 0;
     public Text coin;
-
+    public Image imgCoinProgress;
+    public Text txtMultiplier;
+    public int multiplier = 1;
+    public float fillAmount = 10;
 
 
     public static LevelManager instance
@@ -46,6 +49,18 @@ public class LevelManager : MonoBehaviour
     private void CoinCount()
     {
         coin.text = coinCount.ToString();
+        txtMultiplier.text = multiplier.ToString();
+        //Multiplier Progress 
+        if (imgCoinProgress.fillAmount == 1)
+        {
+            imgCoinProgress.fillAmount = 0;
+            multiplier++;
+        }
+        else
+        {
+            //fill amount determined by the current object count over the amount we want the player to collect in order to fill the meter
+            imgCoinProgress.fillAmount = (coinCount - (fillAmount * (multiplier - 1))) / fillAmount;
+        }
     }
 
     private void ScoreCalculation()
