@@ -12,7 +12,8 @@ public class LevelManager : MonoBehaviour
     public Text score;
     public float PlayerScore;
     public bool isPaused;
-
+    public int coinCount = 0;
+    public Text coin;
 
 
 
@@ -37,6 +38,17 @@ public class LevelManager : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+    {
+        ScoreCalculation();// calculating score
+        CoinCount();// calculating coin
+    }
+
+    private void CoinCount()
+    {
+        coin.text = coinCount.ToString();
+    }
+
+    private void ScoreCalculation()
     {
         if (!isPaused && !player.GetComponent<PlayerController>().IsDead)
         {

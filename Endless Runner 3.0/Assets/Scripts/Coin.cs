@@ -23,7 +23,7 @@ public class Coin : MonoBehaviour
         {
             Instantiate(Particle_Coin, transform.position, Quaternion.identity);// instantiate effect
             Destroy(gameObject);//destroy game objet Coin
-            
+            LevelManager.instance.coinCount++;
         }
     }
 }
