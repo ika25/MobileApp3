@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     {
         public float forwardVelocity = 10;
         public float jumpVelocity = 20;
-        public int forwardInput = 1;
+        //public int forwardInput = 1;
     }
 
     [System.Serializable]
@@ -23,6 +23,17 @@ public class PlayerController : MonoBehaviour
     public float Xspeed = 10;
     public bool IsDead = false;
     public GameObject GameOverUI;
+    public float fVelocity
+    {
+        get
+        {
+            return _fVelocity;
+        }
+        set
+        {
+            _fVelocity = value;
+        }
+    }
 
 
     private Vector3 velocity;
@@ -38,7 +49,7 @@ public class PlayerController : MonoBehaviour
     private float colliderHight;
     private Vector3 colliderCenter;
 
-    private float fVelocity;
+    private float _fVelocity;
 
     // Start is called before the first frame update
     void Start()
@@ -74,7 +85,7 @@ public class PlayerController : MonoBehaviour
             colliderSize = animator.GetFloat("ColliderSize");
             if (colliderSize > 0.2f && colliderSize < 1) // Shrink
             {
-                movementSettings.forwardVelocity = fVelocity + 5;
+                movementSettings.forwardVelocity = _fVelocity + 5;
                 collider.height = 2;
                 collider.center = new Vector3(collider.center.x, 0.85f, collider.center.z);
             }
@@ -82,7 +93,7 @@ public class PlayerController : MonoBehaviour
             {
                 collider.height = colliderHight;
                 collider.center = colliderCenter;
-                movementSettings.forwardVelocity = fVelocity;
+                movementSettings.forwardVelocity = _fVelocity;
 
             }
         }
@@ -91,13 +102,13 @@ public class PlayerController : MonoBehaviour
             colliderSize = animator.GetFloat("ColliderSize");
             if (colliderSize > 0.1f && colliderSize < 1) // Shrink
             {
-                movementSettings.forwardVelocity = fVelocity + 5;
+                movementSettings.forwardVelocity = _fVelocity + 5;
                 collider.height = 3.2f;
                 collider.center = new Vector3(collider.center.x, 4.2f, collider.center.z);
             }
             else // Reset
             {
-                movementSettings.forwardVelocity = fVelocity;
+                movementSettings.forwardVelocity = _fVelocity;
                 collider.height = colliderHight;
                 collider.center = colliderCenter;
             }

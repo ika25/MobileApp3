@@ -25,6 +25,7 @@ public class LevelManager : MonoBehaviour
     public int distanceFactor = 200;
     public Text txtDistance;
     public Animator distanceAnimator;
+    public float AnimSpeed = 1f;
 
 
     public static LevelManager instance
@@ -85,10 +86,15 @@ public class LevelManager : MonoBehaviour
             // Distance calculation 
             if (PlayerScore % distanceFactor == 0)
             {
-                distance += 100;
+                distance += 100;// when player has crossed 100 meters speed will increese 
                 txtDistance.text = distance + " m";
                 StartCoroutine(ShowDistance());
-              
+                // Increasing the velocity 
+                player.GetComponent<PlayerController>().fVelocity += 2;
+                if (AnimSpeed < 2)
+                    AnimSpeed += 0.1f;
+                player.GetComponent<Animator>().SetFloat("AnimSpeed", AnimSpeed);
+
             }
         }
         else if (isPaused)
