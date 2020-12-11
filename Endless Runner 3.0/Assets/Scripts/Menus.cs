@@ -7,6 +7,7 @@ public class Menus : MonoBehaviour
     // Veriables
     public PlayerController player;
     public GameObject PauseMenu;
+   
 
     // Function that will pause the game
     public void PauseGame()
@@ -15,6 +16,7 @@ public class Menus : MonoBehaviour
         {
             PauseMenu.SetActive(true);
             Time.timeScale = 0;
+            LevelManager.instance.isPaused = true;
         }
     }
 
@@ -23,7 +25,8 @@ public class Menus : MonoBehaviour
     {
         PauseMenu.SetActive(false);
         Time.timeScale = 1;
-        
+        LevelManager.instance.isPaused = false;
+
     }
 
     // Function when clicked on main menu to reload the current scene
