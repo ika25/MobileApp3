@@ -20,6 +20,11 @@ public class LevelManager : MonoBehaviour
     public float fillAmount = 10;
     public int heartCount = 0;
     public Text txtHeart;
+    // Distance Veriables
+    public int distance = 0;
+    public int distanceFactor = 200;
+    public Text txtDistance;
+    public Animator distanceAnimator;
 
 
     public static LevelManager instance
@@ -75,12 +80,27 @@ public class LevelManager : MonoBehaviour
     {
         if (!isPaused && !player.GetComponent<PlayerController>().IsDead)
         {
-            PlayerScore = (Time.frameCount - _framePaused) / 10;
-            score.text = PlayerScore.ToString();
+            PlayerScore = (Time.frameCount - _framePaused) / 10f;
+            score.text = ((int)PlayerScore).ToString();
+            // Distance calculation 
+            if (PlayerScore % distanceFactor == 0)
+            {
+                distance += 100;
+                txtDistance.text = distance + " m";
+                StartCoroutine(ShowDistance());
+              
+            }
         }
         else if (isPaused)
         {
             _framePaused++;
         }
+    }
+
+    private IEnumerator ShowDistance()
+    {
+        distanceAnimator.SetTrigger("Show");
+        yield return new WaitForSeconds(2);
+        distanceAnimator.SetTrigger("Hide");
     }
 }
