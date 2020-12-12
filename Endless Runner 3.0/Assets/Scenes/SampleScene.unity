@@ -1180,7 +1180,7 @@ MonoBehaviour:
   txtDistance: {fileID: 1236913256}
   distanceAnimator: {fileID: 2139544460}
   AnimSpeed: 1
-  GameOverUI: {fileID: 1944177924}
+  GameOverUI: {fileID: 323668098}
 --- !u!4 &140768111
 Transform:
   m_ObjectHideFlags: 0
@@ -6349,7 +6349,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &963194227
 Camera:
   m_ObjectHideFlags: 0

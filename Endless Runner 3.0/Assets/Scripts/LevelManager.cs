@@ -125,7 +125,9 @@ public class LevelManager : MonoBehaviour
             SaveCoins();
             // Save Hearts 
             SaveHearts();
-     }
+            // Save Highest Multiplier
+            SaveMultiplier();
+    }
 
     // save score function
     private void SaveScore()
@@ -151,5 +153,15 @@ public class LevelManager : MonoBehaviour
         int CollectedCoins = PlayerPrefs.GetInt("CollectedCoins");
         CollectedCoins = coinCount + CollectedCoins;
         PlayerPrefs.SetInt("CollectedCoins", CollectedCoins);
+    }
+
+    // Multiplier function
+    private void SaveMultiplier()
+    {
+        int HighestMultiplier = PlayerPrefs.GetInt("HighestMultiplier");//saved
+        if (multiplier > HighestMultiplier)//compare
+        {
+            PlayerPrefs.SetInt("HighestMultiplier", (int)multiplier);//save
+        }
     }
 }
