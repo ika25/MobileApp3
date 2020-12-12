@@ -113,7 +113,7 @@ public class LevelManager : MonoBehaviour
     }
 
      public void KillPlayer()
-        {
+     {
             //Save highest score
             SaveScore();
             player.GetComponent<PlayerController>().IsDead = true;
@@ -123,8 +123,11 @@ public class LevelManager : MonoBehaviour
             GameOverUI.GetComponent<Animator>().SetTrigger("Show");
             // Save Coins 
             SaveCoins();
-    }
+            // Save Hearts 
+            SaveHearts();
+     }
 
+    // save score function
     private void SaveScore()
     {
         int HighestScore = PlayerPrefs.GetInt("HighestScore");// compare previous scores
@@ -134,6 +137,15 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    // Save hearts function
+    private void SaveHearts()
+    {
+        int CollectedHearts = PlayerPrefs.GetInt("CollectedHearts");
+        CollectedHearts = heartCount + CollectedHearts;
+        PlayerPrefs.SetInt("CollectedHearts", CollectedHearts);
+    }
+
+    // save coins function
     private void SaveCoins()
     {
         int CollectedCoins = PlayerPrefs.GetInt("CollectedCoins");
