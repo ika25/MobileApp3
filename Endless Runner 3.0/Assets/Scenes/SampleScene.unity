@@ -1179,6 +1179,8 @@ MonoBehaviour:
   distanceFactor: 200
   txtDistance: {fileID: 1236913256}
   distanceAnimator: {fileID: 2139544460}
+  AnimSpeed: 1
+  GameOverUI: {fileID: 1944177924}
 --- !u!4 &140768111
 Transform:
   m_ObjectHideFlags: 0
@@ -2396,12 +2398,10 @@ MonoBehaviour:
   movementSettings:
     forwardVelocity: 15
     jumpVelocity: 25
-    forwardInput: 1
   physicsSettings:
     downAcceleration: 0.75
   Xspeed: 10
   IsDead: 0
-  GameOverUI: {fileID: 323668098}
   onGround: 0
   distanceToGround: 6
 --- !u!114 &390793224

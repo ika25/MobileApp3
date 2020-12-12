@@ -22,7 +22,6 @@ public class PlayerController : MonoBehaviour
     public PhysicsSettings physicsSettings = new PhysicsSettings();
     public float Xspeed = 10;
     public bool IsDead = false;
-    public GameObject GameOverUI;
     public float fVelocity
     {
         get
@@ -204,14 +203,7 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-        public void KillPlayer()
-        {
-            IsDead = true;
-            movementSettings.forwardVelocity = 0;
-            animator.SetTrigger("Die");
-            //show game over window
-            GameOverUI.GetComponent<Animator>().SetTrigger("Show");
-        }
+        
 }
 
 

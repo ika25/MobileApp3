@@ -10,7 +10,7 @@ public class KillPlayer : MonoBehaviour
         {
             if (!other.collider.GetComponent<PlayerController>().IsDead) //check if player is not dead
             {
-                other.collider.GetComponent<PlayerController>().KillPlayer();// then kill the player
+                LevelManager.instance.KillPlayer();// then kill the player
             }
         }
     }

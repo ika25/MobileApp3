@@ -26,6 +26,8 @@ public class LevelManager : MonoBehaviour
     public Text txtDistance;
     public Animator distanceAnimator;
     public float AnimSpeed = 1f;
+    //Data Storage veriables
+    public GameObject GameOverUI;
 
 
     public static LevelManager instance
@@ -108,5 +110,26 @@ public class LevelManager : MonoBehaviour
         distanceAnimator.SetTrigger("Show");
         yield return new WaitForSeconds(2);
         distanceAnimator.SetTrigger("Hide");
+    }
+
+     public void KillPlayer()
+        {
+            //Save highest score
+            SaveScore();
+            player.GetComponent<PlayerController>().IsDead = true;
+            player.GetComponent<PlayerController>().movementSettings.forwardVelocity = 0;
+            player.GetComponent<Animator>().SetTrigger("Die");
+            //show game over window
+            GameOverUI.GetComponent<Animator>().SetTrigger("Show");
+            
+        }
+
+    private void SaveScore()
+    {
+        int HighestScore = PlayerPrefs.GetInt("HighestScore");// compare previous scores
+        if (PlayerScore > HighestScore)
+        {
+            PlayerPrefs.SetInt("HighestScore", (int)PlayerScore);//see highest score
+        }
     }
 }
