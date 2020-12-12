@@ -1,13 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Menus : MonoBehaviour
 {
     // Veriables
     public PlayerController player;
     public GameObject PauseMenu;
-   
+    public Animator AchievmentAnimator;
+    public Animator GameOverAnimator;
+    public Text CurrentCoins, AllCoins, CurrentHearts, AllHearts, CurrentScore, HighestScore, CurrentMultiplier, HighestMultiplier;// ahcievment data
+
 
     // Function that will pause the game
     public void PauseGame()
@@ -49,5 +53,22 @@ public class Menus : MonoBehaviour
         AudioIcon icon = GameObject.Find("AudioButton").GetComponent<AudioIcon>();
         icon.SpriteSwitch();
         
+    }
+
+    public void ShowAchievments()
+    {
+        GameOverAnimator.SetTrigger("Hide");
+        // Get Achievment data
+        CurrentCoins.text = LevelManager.instance.coinCount.ToString();
+        CurrentHearts.text = LevelManager.instance.heartCount.ToString();
+        CurrentMultiplier.text = LevelManager.instance.multiplier.ToString();
+        CurrentScore.text = ((int)LevelManager.instance.PlayerScore).ToString();
+        //get all stored data
+        AllCoins.text = PlayerPrefs.GetInt("CollectedCoins").ToString();
+        AllHearts.text = PlayerPrefs.GetInt("CollectedHearts").ToString();
+        HighestMultiplier.text = PlayerPrefs.GetInt("HighestMultiplier").ToString();
+        HighestScore.text = PlayerPrefs.GetInt("HighestScore").ToString();
+
+        AchievmentAnimator.SetTrigger("Show");
     }
 }

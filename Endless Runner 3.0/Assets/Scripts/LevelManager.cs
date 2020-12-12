@@ -7,6 +7,7 @@ public class LevelManager : MonoBehaviour
 {
     private static LevelManager _instance;
     private int _framePaused = 0;
+    private CategoryButton activeButton;
 
     public GameObject player;
     public Text score;
@@ -28,7 +29,8 @@ public class LevelManager : MonoBehaviour
     public float AnimSpeed = 1f;
     //Data Storage veriables
     public GameObject GameOverUI;
-
+    public ScrollRect achvScrollbar;
+    public Animator AchievmentAnimator;
 
     public static LevelManager instance
     {
@@ -45,6 +47,8 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        activeButton = GameObject.Find("CurrentPLayerButton").GetComponent<CategoryButton>();
+        activeButton.Switch();
         PlayerScore = 0;
         isPaused = false;
 }
@@ -127,6 +131,7 @@ public class LevelManager : MonoBehaviour
             SaveHearts();
             // Save Highest Multiplier
             SaveMultiplier();
+            
     }
 
     // save score function
@@ -163,5 +168,15 @@ public class LevelManager : MonoBehaviour
         {
             PlayerPrefs.SetInt("HighestMultiplier", (int)multiplier);//save
         }
+    }
+
+    // this function will recieve game object
+    public void CategorySwitch(CategoryButton btn)
+    { // All Players
+        btn.Switch();//
+        activeButton.Switch();
+        activeButton = btn;
+        achvScrollbar.content = btn.achievementMenu.GetComponent<RectTransform>();
+
     }
 }
