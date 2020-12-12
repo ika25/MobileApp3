@@ -121,8 +121,9 @@ public class LevelManager : MonoBehaviour
             player.GetComponent<Animator>().SetTrigger("Die");
             //show game over window
             GameOverUI.GetComponent<Animator>().SetTrigger("Show");
-            
-        }
+            // Save Coins 
+            SaveCoins();
+    }
 
     private void SaveScore()
     {
@@ -131,5 +132,12 @@ public class LevelManager : MonoBehaviour
         {
             PlayerPrefs.SetInt("HighestScore", (int)PlayerScore);//see highest score
         }
+    }
+
+    private void SaveCoins()
+    {
+        int CollectedCoins = PlayerPrefs.GetInt("CollectedCoins");
+        CollectedCoins = coinCount + CollectedCoins;
+        PlayerPrefs.SetInt("CollectedCoins", CollectedCoins);
     }
 }
