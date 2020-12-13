@@ -33,6 +33,8 @@ public class LevelManager : MonoBehaviour
     public GameObject GameOverUI;
     public ScrollRect achvScrollbar;
     public Animator AchievmentAnimator;
+    //Audio veriables
+    public AudioClip mainTheme, hitSFX, endTheme;
 
     public GameObject PlayerCanvas;
 
@@ -126,6 +128,8 @@ public class LevelManager : MonoBehaviour
 
      public void KillPlayer(GameObject enemy)
      {
+            // SFX 
+            gameObject.GetComponent<AudioSource>().PlayOneShot(hitSFX, 1);
             //Save highest score
             SaveScore();
             player.GetComponent<PlayerController>().IsDead = true;
@@ -147,10 +151,12 @@ public class LevelManager : MonoBehaviour
             // Save Highest Multiplier
             SaveMultiplier();
             _enemy = enemy;
+            //Change the Audio Clip 
+            gameObject.GetComponent<AudioSource>().clip = endTheme;
+            gameObject.GetComponent<AudioSource>().Play();
 
 
-
-    }
+     }
 
     private GameObject _enemy;
     private int countinueCount = 0;
@@ -171,6 +177,11 @@ public class LevelManager : MonoBehaviour
         if (heartCount >= countinueValue)
         {
             GameObject.Destroy(_enemy);
+            //Change the Audio Clip 
+            gameObject.GetComponent<AudioSource>().clip = mainTheme;
+            instance.gameObject.GetComponent<AudioSource>().Play();
+
+
             player.GetComponent<PlayerController>().IsDead = false;
             player.GetComponent<PlayerController>().movementSettings.forwardInput = 1;
             player.GetComponent<Animator>().SetTrigger("Run");
@@ -241,5 +252,8 @@ public class LevelManager : MonoBehaviour
         player.GetComponent<PlayerController>().LevelStart = true;
         GameObject.Find("MainMenu").SetActive(false);//Deactivate main menu
         PlayerCanvas.SetActive(true);// activate player
+        //Change the Audio Clip 
+        gameObject.GetComponent<AudioSource>().clip = mainTheme;
+        gameObject.GetComponent<AudioSource>().Play();
     }
 }

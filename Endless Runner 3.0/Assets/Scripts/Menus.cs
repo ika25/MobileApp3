@@ -67,7 +67,16 @@ public class Menus : MonoBehaviour
     {
         AudioIcon icon = GameObject.Find("AudioButton").GetComponent<AudioIcon>();
         icon.SpriteSwitch();
-        
+        // Adjusting the volume 
+        if (LevelManager.instance.gameObject.GetComponent<AudioSource>().volume == 0)
+        {
+            LevelManager.instance.gameObject.GetComponent<AudioSource>().volume = 1;
+        }
+        else
+        {
+            LevelManager.instance.gameObject.GetComponent<AudioSource>().volume = 0; // Mute
+        }
+
     }
 
     public void ShowAchievments()

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Heart : MonoBehaviour
 {
     public GameObject Particle_Heart;
+    public AudioClip PickupSound;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +25,7 @@ public class Heart : MonoBehaviour
             Instantiate(Particle_Heart, transform.position, Quaternion.identity);// instantiate effect
             Destroy(gameObject);//destroy game objet heart
             LevelManager.instance.heartCount++;
+            LevelManager.instance.gameObject.GetComponent<AudioSource>().PlayOneShot(PickupSound, 1);//play on shot
         }
     }
 }

@@ -5,6 +5,8 @@ using UnityEngine;
 public class Coin : MonoBehaviour
 {
     public GameObject Particle_Coin;
+    public AudioClip PickupSound;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +26,7 @@ public class Coin : MonoBehaviour
             Instantiate(Particle_Coin, transform.position, Quaternion.identity);// instantiate effect
             Destroy(gameObject);//destroy game objet Coin
             LevelManager.instance.coinCount++;
+            LevelManager.instance.gameObject.GetComponent<AudioSource>().PlayOneShot(PickupSound, 1);//play on shot
         }
     }
 }
