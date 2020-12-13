@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     {
         public float forwardVelocity = 10;
         public float jumpVelocity = 20;
-        //public int forwardInput = 1;
+        public int forwardInput = 1;
     }
 
     [System.Serializable]
@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public bool LevelStart = false;
 
     private Vector3 velocity;
     private Rigidbody rigidbody;
@@ -66,14 +67,17 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        InputHandling();
-        Run();
-       Debug.Log (CheckGround());
-        ColliderHandling();
-        Jump();
-        Slide();
-        MoveX();
-        rigidbody.velocity = velocity;
+        if (LevelStart == true)
+        {
+            InputHandling();
+            Run();
+            Debug.Log(CheckGround());
+            ColliderHandling();
+            Jump();
+            Slide();
+            MoveX();
+            rigidbody.velocity = velocity * movementSettings.forwardInput;
+        }
 
     }
 

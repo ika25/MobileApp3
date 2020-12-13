@@ -7,6 +7,7 @@ public class LevelManager : MonoBehaviour
 {
     private static LevelManager _instance;
     private int _framePaused = 0;
+    private int _frameStart = 0;
     private CategoryButton activeButton;
 
     public GameObject player;
@@ -21,6 +22,7 @@ public class LevelManager : MonoBehaviour
     public float fillAmount = 10;
     public int heartCount = 0;
     public Text txtHeart;
+    public Text txtContinueHeart;
     // Distance Veriables
     public int distance = 0;
     public int distanceFactor = 200;
@@ -31,6 +33,8 @@ public class LevelManager : MonoBehaviour
     public GameObject GameOverUI;
     public ScrollRect achvScrollbar;
     public Animator AchievmentAnimator;
+
+    public GameObject PlayerCanvas;
 
     public static LevelManager instance
     {
@@ -85,9 +89,9 @@ public class LevelManager : MonoBehaviour
 
     private void ScoreCalculation()
     {
-        if (!isPaused && !player.GetComponent<PlayerController>().IsDead)
+        if (player.GetComponent<PlayerController>().LevelStart && !isPaused && !player.GetComponent<PlayerController>().IsDead)
         {
-            PlayerScore = (Time.frameCount - _framePaused) / 10f;
+            PlayerScore = (Time.frameCount - _framePaused - _frameStart) / 10f;
             score.text = ((int)PlayerScore).ToString();
             // Distance calculation 
             if (PlayerScore % distanceFactor == 0)
@@ -107,6 +111,10 @@ public class LevelManager : MonoBehaviour
         {
             _framePaused++;
         }
+        else if (player.GetComponent<PlayerController>().LevelStart == false)
+        {
+            _frameStart++;
+        }
     }
 
     private IEnumerator ShowDistance()
@@ -116,13 +124,20 @@ public class LevelManager : MonoBehaviour
         distanceAnimator.SetTrigger("Hide");
     }
 
-     public void KillPlayer()
+     public void KillPlayer(GameObject enemy)
      {
             //Save highest score
             SaveScore();
             player.GetComponent<PlayerController>().IsDead = true;
-            player.GetComponent<PlayerController>().movementSettings.forwardVelocity = 0;
+            player.GetComponent<PlayerController>().movementSettings.forwardInput = 0;
             player.GetComponent<Animator>().SetTrigger("Die");
+            // Hide Player Canvas 
+            PlayerCanvas.SetActive(false);
+            // Update the ContinueHearts
+            if (countinueCount == 1)
+            {
+                txtContinueHeart.text = (countinueValue * 2).ToString();
+            }
             //show game over window
             GameOverUI.GetComponent<Animator>().SetTrigger("Show");
             // Save Coins 
@@ -131,7 +146,46 @@ public class LevelManager : MonoBehaviour
             SaveHearts();
             // Save Highest Multiplier
             SaveMultiplier();
+            _enemy = enemy;
+
+
+
+    }
+
+    private GameObject _enemy;
+    private int countinueCount = 0;
+    private int countinueValue = 1;
+
+    //in this function we need to count how many times player has continued game.
+    public void GameContinue()
+    {
+        if (countinueCount == 0)
+        {
+            countinueCount = 1;
+        }
+        else //if its not first time
+        {
+            countinueValue = countinueValue * 2; // 1*2=2, third try 2*2 =4, fourth 4*2=8 8 hearts will be required player to continue
+        }
+
+        if (heartCount >= countinueValue)
+        {
+            GameObject.Destroy(_enemy);
+            player.GetComponent<PlayerController>().IsDead = false;
+            player.GetComponent<PlayerController>().movementSettings.forwardInput = 1;
+            player.GetComponent<Animator>().SetTrigger("Run");
+            // Show Player Canvas 
+            PlayerCanvas.SetActive(true);
+            // Hide Game Over Window 
+            GameOverUI.GetComponent<Animator>().SetTrigger("Hide");
+            // Update the CollectedHearts
+            heartCount = heartCount - countinueValue;
             
+        }
+        else //
+        {
+            Menus.instance.ShowAchievments();// calling WhowAchievement function from menus
+        }
     }
 
     // save score function
@@ -178,5 +232,14 @@ public class LevelManager : MonoBehaviour
         activeButton = btn;
         achvScrollbar.content = btn.achievementMenu.GetComponent<RectTransform>();
 
+    }
+
+    //This function will start level when clicked
+    public void StartGame()
+    {
+        player.GetComponent<Animator>().SetTrigger("Run");
+        player.GetComponent<PlayerController>().LevelStart = true;
+        GameObject.Find("MainMenu").SetActive(false);//Deactivate main menu
+        PlayerCanvas.SetActive(true);// activate player
     }
 }

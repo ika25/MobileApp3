@@ -11,6 +11,21 @@ public class Menus : MonoBehaviour
     public Animator AchievmentAnimator;
     public Animator GameOverAnimator;
     public Text CurrentCoins, AllCoins, CurrentHearts, AllHearts, CurrentScore, HighestScore, CurrentMultiplier, HighestMultiplier;// ahcievment data
+    private static Menus _instance;
+
+
+    // access this class directly by the name of the class
+    public static Menus instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = GameObject.FindObjectOfType<Menus>();
+            }
+            return _instance;
+        }
+    }
 
 
     // Function that will pause the game
