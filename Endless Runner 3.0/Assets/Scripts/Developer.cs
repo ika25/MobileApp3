@@ -6,6 +6,7 @@ public class Developer : MonoBehaviour
 {
     public bool show = true;
     public Help help;
+    public Characters characters;
 
     // Update is called once per frame
     public void Show_Hide()
@@ -16,6 +17,11 @@ public class Developer : MonoBehaviour
             {
                 help.gameObject.GetComponent<Animator>().SetTrigger("Hide");
                 help.show = true;
+            }
+            else if (!characters.show)
+            {
+                characters.gameObject.GetComponent<Animator>().SetTrigger("Hide");
+                characters.show = true;
             }
             
             GetComponent<Animator>().SetTrigger("Show");
