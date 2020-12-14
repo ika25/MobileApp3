@@ -35,6 +35,11 @@ public class LevelManager : MonoBehaviour
     public Animator AchievmentAnimator;
     //Audio veriables
     public AudioClip mainTheme, hitSFX, endTheme;
+    //Charcter Veriables
+    public Text txtCollectedCoins, txtPlayer1Coins, txtPlayer2Coins;
+    public int player1RequiredCoins = 200, player2RequiredCoins = 100;
+    public GameObject player1Button, coinsPlayer1, characterPlayer1;
+    public GameObject Player2Button, coinsPlayer2, characterPlayer2;
 
     public GameObject PlayerCanvas;
 
@@ -57,7 +62,47 @@ public class LevelManager : MonoBehaviour
         activeButton.Switch();
         PlayerScore = 0;
         isPaused = false;
-}
+        // Players 
+        txtCollectedCoins.text = PlayerPrefs.GetInt("CollectedCoins").ToString();
+        txtPlayer1Coins.text = player1RequiredCoins.ToString();
+        txtPlayer2Coins.text = player2RequiredCoins.ToString();
+        int player1 = PlayerPrefs.GetInt("player1");
+        Player2Button.GetComponent<CharacterUnlock>().Activate();
+        if (player1 == 1) // 0 -> locked  1 -> unlocked  2 -> active
+        {
+            player1Button.GetComponent<CharacterUnlock>().Unlock();
+            coinsPlayer1.SetActive(false);
+            coinsPlayer2.SetActive(false);
+            characterPlayer1.SetActive(false);
+        }
+        else if (player1 == 2)
+        {
+            player1Button.GetComponent<CharacterUnlock>().Activate();
+            Player2Button.GetComponent<CharacterUnlock>().Unlock();
+            coinsPlayer1.SetActive(false);
+            coinsPlayer2.SetActive(false);
+            characterPlayer2.SetActive(false);
+        }
+        else
+        {
+            if (PlayerPrefs.GetInt("CollectedCoins") >= player1RequiredCoins)
+            {
+                player1Button.GetComponent<CharacterUnlock>().Unlock();
+                coinsPlayer1.SetActive(false);
+                coinsPlayer2.SetActive(false);
+                characterPlayer1.SetActive(false);
+                PlayerPrefs.SetInt("player1", 1);
+                PlayerPrefs.SetInt("CollectedCoins", PlayerPrefs.GetInt("CollectedCoins") - player1RequiredCoins);
+
+            }
+            else
+            {
+                coinsPlayer2.SetActive(false);
+                characterPlayer1.SetActive(false);
+            }
+        }
+       
+    }
 
     // Update is called once per frame
     void Update()
@@ -65,6 +110,34 @@ public class LevelManager : MonoBehaviour
         ScoreCalculation();// calculating score
         CoinCount();// calculating coin
         HeartCount();
+    }
+
+
+    public void CharacterActivate(bool isPlayer1)
+    {
+        if (isPlayer1)
+        {
+            if (PlayerPrefs.GetInt("Player1") == 1)
+            {
+                PlayerPrefs.SetInt("Player", 2);
+                player1Button.GetComponent<CharacterUnlock>().Activate();
+                Player2Button.GetComponent<CharacterUnlock>().Unlock();
+                characterPlayer2.SetActive(false);
+                characterPlayer1.SetActive(true);
+            }
+        }
+        else
+        {
+            if (PlayerPrefs.GetInt("player1") != 0)
+            {
+                PlayerPrefs.SetInt("player1", 1);
+                Player2Button.GetComponent<CharacterUnlock>().Activate();
+                player1Button.GetComponent<CharacterUnlock>().Unlock();
+                characterPlayer1.SetActive(false);
+                characterPlayer2.SetActive(true);
+            }
+        }
+        
     }
 
     private void HeartCount()
