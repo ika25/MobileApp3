@@ -223,7 +223,7 @@ public class LevelManager : MonoBehaviour
             imgCoinProgress.fillAmount = 0;
             multiplier++;
 
-            //added 2020.12.15
+            //Power up function
             StopCoroutine("ResetThePower");
             player.GetComponent<PlayerController>().movementSettings.forwardVelocity += 3;
             player.GetComponent<PlayerController>().isPowerUpStatus = true;
@@ -247,9 +247,10 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    // power up timer function
     IEnumerator ResetThePower()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(10f);
         player.GetComponent<PlayerController>().isPowerUpStatus = false;
         KillPlayer[] kps = (KillPlayer[])GameObject.FindObjectsOfType(typeof(KillPlayer));
         foreach (KillPlayer kp in kps)
@@ -275,7 +276,7 @@ public class LevelManager : MonoBehaviour
                 txtDistance.text = distance + " m";
                 StartCoroutine(ShowDistance());
                 // Increasing the velocity 
-                player.GetComponent<PlayerController>().fVelocity += 2;
+                player.GetComponent<PlayerController>().fVelocity += 5;
                 if (AnimSpeed < 2)
                     AnimSpeed += 0.1f;
                 player.GetComponent<Animator>().SetFloat("AnimSpeed", AnimSpeed);
