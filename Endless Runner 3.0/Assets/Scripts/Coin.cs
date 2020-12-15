@@ -13,7 +13,7 @@ public class Coin : MonoBehaviour
 
     }
 
-    // Update is called once per frame
+    // Update postion of the coin
     void Update()
     {
 

@@ -329,4 +329,10 @@ public class LevelManager : MonoBehaviour
         gameObject.GetComponent<AudioSource>().clip = mainTheme;
         gameObject.GetComponent<AudioSource>().Play();
     }
+
+    public void Lightning()
+    {
+      
+
+    }
 }
