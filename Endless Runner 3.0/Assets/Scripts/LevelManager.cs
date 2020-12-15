@@ -67,8 +67,43 @@ public class LevelManager : MonoBehaviour
         txtPlayer1Coins.text = player1RequiredCoins.ToString();
         txtPlayer2Coins.text = player2RequiredCoins.ToString();
         int player1 = PlayerPrefs.GetInt("player1");
+
+        int curPlayerID = PlayerPrefs.GetInt("Player", 1);
         Player2Button.GetComponent<CharacterUnlock>().Activate();
-        if (player1 == 1) // 0 -> locked  1 -> unlocked  2 -> active
+
+        if(curPlayerID == 1)
+        {
+            characterPlayer1.SetActive(true);
+            characterPlayer2.SetActive(false);
+
+            player = characterPlayer1;
+        }
+        else if(curPlayerID == 2)
+        {
+            characterPlayer1.SetActive(false);
+            characterPlayer2.SetActive(true);
+
+            player = characterPlayer2;
+        }
+
+        BuildingController[] bCs = (BuildingController[])GameObject.FindObjectsOfType(typeof(BuildingController));
+        foreach (BuildingController bC in bCs)
+        {
+            bC.player = player.transform;
+        }
+        CarController[] cCs = (CarController[])GameObject.FindObjectsOfType(typeof(CarController));
+        foreach (CarController cC in cCs)
+        {
+            cC.player = player.transform;
+        }
+
+        CameraController[] cameraCs = (CameraController[])GameObject.FindObjectsOfType(typeof(CameraController));
+        foreach (CameraController cC in cameraCs)
+        {
+            cC.player = player.transform;
+        }
+
+        /*if (player1 == 1) // 0 -> locked  1 -> unlocked  2 -> active
         {
             player1Button.GetComponent<CharacterUnlock>().Unlock();
             coinsPlayer1.SetActive(false);
@@ -100,8 +135,8 @@ public class LevelManager : MonoBehaviour
                 coinsPlayer2.SetActive(false);
                 characterPlayer1.SetActive(false);
             }
-        }
-       
+        }*/
+
     }
 
     // Update is called once per frame
@@ -117,27 +152,60 @@ public class LevelManager : MonoBehaviour
     {
         if (isPlayer1)
         {
-            if (PlayerPrefs.GetInt("Player1") == 1)
+            /*if (PlayerPrefs.GetInt("Player1") == 1)
             {
                 PlayerPrefs.SetInt("Player", 2);
                 player1Button.GetComponent<CharacterUnlock>().Activate();
                 Player2Button.GetComponent<CharacterUnlock>().Unlock();
                 characterPlayer2.SetActive(false);
                 characterPlayer1.SetActive(true);
-            }
+            }*/
+
+            PlayerPrefs.SetInt("Player", 1);
+            player1Button.GetComponent<CharacterUnlock>().Activate();
+            Player2Button.GetComponent<CharacterUnlock>().Unlock();
+            characterPlayer2.SetActive(false);
+            characterPlayer1.SetActive(true);
+
+            player = characterPlayer1;
         }
         else
         {
-            if (PlayerPrefs.GetInt("player1") != 0)
+            /*if (PlayerPrefs.GetInt("player1") != 0)
             {
                 PlayerPrefs.SetInt("player1", 1);
                 Player2Button.GetComponent<CharacterUnlock>().Activate();
                 player1Button.GetComponent<CharacterUnlock>().Unlock();
                 characterPlayer1.SetActive(false);
                 characterPlayer2.SetActive(true);
-            }
+            }*/
+
+            PlayerPrefs.SetInt("Player", 2);
+            Player2Button.GetComponent<CharacterUnlock>().Activate();
+            player1Button.GetComponent<CharacterUnlock>().Unlock();
+            characterPlayer1.SetActive(false);
+            characterPlayer2.SetActive(true);
+
+            player = characterPlayer2;
         }
-        
+
+        BuildingController[] bCs = (BuildingController[])GameObject.FindObjectsOfType(typeof(BuildingController));
+        foreach (BuildingController bC in bCs)
+        {
+            bC.player = player.transform;
+        }
+
+        CarController[] cCs = (CarController[])GameObject.FindObjectsOfType(typeof(CarController));
+        foreach (CarController cC in cCs)
+        {
+            cC.player = player.transform;
+        }
+
+        CameraController[] cameraCs = (CameraController[])GameObject.FindObjectsOfType(typeof(CameraController));
+        foreach (CameraController cC in cameraCs)
+        {
+            cC.player = player.transform;
+        }
     }
 
     private void HeartCount()
@@ -154,11 +222,43 @@ public class LevelManager : MonoBehaviour
         {
             imgCoinProgress.fillAmount = 0;
             multiplier++;
+
+            //added 2020.12.15
+            StopCoroutine("ResetThePower");
+            player.GetComponent<PlayerController>().movementSettings.forwardVelocity += 3;
+            player.GetComponent<PlayerController>().isPowerUpStatus = true;
+
+            KillPlayer[] kps = (KillPlayer[])GameObject.FindObjectsOfType(typeof(KillPlayer));
+            foreach (KillPlayer kp in kps)
+            {
+                var colliderComponents = kp.GetComponentsInChildren<Collider>(true);
+                foreach(Collider obj in colliderComponents)
+                {
+                    ((BoxCollider)obj.gameObject.GetComponent(typeof(Collider))).enabled = false;
+                }
+            }
+
+            StartCoroutine("ResetThePower");
         }
         else
         {
             //fill amount determined by the current object count over the amount we want the player to collect in order to fill the meter
             imgCoinProgress.fillAmount = (coinCount - (fillAmount * (multiplier - 1))) / fillAmount;
+        }
+    }
+
+    IEnumerator ResetThePower()
+    {
+        yield return new WaitForSeconds(5f);
+        player.GetComponent<PlayerController>().isPowerUpStatus = false;
+        KillPlayer[] kps = (KillPlayer[])GameObject.FindObjectsOfType(typeof(KillPlayer));
+        foreach (KillPlayer kp in kps)
+        {
+            var colliderComponents = kp.GetComponentsInChildren<Collider>(true);
+            foreach (Collider obj in colliderComponents)
+            {
+                ((BoxCollider)obj.gameObject.GetComponent(typeof(Collider))).enabled = true;
+            }
         }
     }
 

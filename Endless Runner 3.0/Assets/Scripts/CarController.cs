@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CarController : MonoBehaviour
 {
-    Transform player;
+    public Transform player;
     public int speed = 10;
     public int distance = 100;
     
@@ -13,7 +13,17 @@ public class CarController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.Find("PlayerController").transform;
+        player = LevelManager.instance.player.transform;
+        if (player.GetComponent<PlayerController>().isPowerUpStatus)
+        {
+            var colliderComponents = gameObject.GetComponentsInChildren<Collider>(true);
+            foreach (Collider obj in colliderComponents)
+            {
+                ((BoxCollider)obj.gameObject.GetComponent(typeof(Collider))).enabled = false;
+            }
+        }
+
+        //player = GameObject.Find("PlayerController").transform;
         int r = Random.Range(1, 3);
         if (r == 1)
         {
@@ -32,13 +42,16 @@ public class CarController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate ()
     {
-        if (!GameObject.Find("PlayerController").GetComponent<PlayerController>().IsDead)
+        if (player != null)
         {
-            if (Vector3.Distance(transform.position, player.position) <= distance)
+            if (!player.GetComponent<PlayerController>().IsDead)
             {
-                transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - speed * Time.deltaTime);
-               
+                if (Vector3.Distance(transform.position, player.position) <= distance)
+                {
+                    transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - speed * Time.deltaTime);
 
+
+                }
             }
         }
     }
